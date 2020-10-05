@@ -15,6 +15,17 @@ public class TicTacToeGame {
 		return board;
 	}
 
+	private void toss() {
+		byte toss = (byte) (Math.random() * 10 % 2);
+		if (toss == 0) {
+			System.out.println("Your are playing first.");
+			chooseLettter();
+		} else {
+			playerLetter = 'x';
+			System.out.println("Computer's turn first.");
+		}
+	}
+
 	private char chooseLettter() {
 		System.out.println("Enter your preferred letter (o or x): ");
 		playerLetter = sc.next().charAt(0);
@@ -66,12 +77,10 @@ public class TicTacToeGame {
 		TicTacToeGame ticTacToeGame = new TicTacToeGame();
 		ticTacToeGame.boardInitiate();
 
-		System.out.println("Player has chosen: " + ticTacToeGame.chooseLettter());
-		System.out.println("Computer's letter : " + ticTacToeGame.computerLetter());
 		ticTacToeGame.toss();
+		ticTacToeGame.move();
 
 		sc.close();
-
 	}
 
 }
