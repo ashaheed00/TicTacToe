@@ -15,14 +15,14 @@ public class TicTacToeGame {
 		return board;
 	}
 
-	private char chooseLettter() throws Exception {
+	private char chooseLettter() {
 		System.out.println("Enter your preferred letter (o or x): ");
 		playerLetter = sc.next().charAt(0);
 		if (playerLetter == 'o' || playerLetter == 'x')
 			return playerLetter;
 		else {
-			playerLetter = ' ';
-			throw new Exception("Wrong input. Choose only o or x");
+			System.err.println("Wrong input. Taking 'o' as your choice.");
+			return playerLetter = 'o';
 		}
 	}
 
@@ -46,9 +46,10 @@ public class TicTacToeGame {
 		System.out.println("Enter your position(1 to 9): ");
 		int position = sc.nextInt();
 		try {
-			if (movePossible(position) && position >= 1 && position <= 9)
+			if (movePossible(position) && position >= 1 && position <= 9) {
 				board[position] = playerLetter;
-			else {
+				showBoard();
+			} else {
 				System.err.println("Already occupies the position. Try again.");
 				move();
 			}
@@ -65,14 +66,10 @@ public class TicTacToeGame {
 		TicTacToeGame ticTacToeGame = new TicTacToeGame();
 		ticTacToeGame.boardInitiate();
 
-		try {
-			System.out.println("Player has chosen: " + ticTacToeGame.chooseLettter());
-		} catch (Exception e) {
-			System.err.println("Wrong input. Choose again: ");
-			ticTacToeGame.chooseLettter();
-		}
+		System.out.println("Player has chosen: " + ticTacToeGame.chooseLettter());
 		System.out.println("Computer's letter : " + ticTacToeGame.computerLetter());
-		ticTacToeGame.move();
+		ticTacToeGame.toss();
+
 		sc.close();
 
 	}
