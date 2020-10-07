@@ -42,26 +42,16 @@ public class TicTacToeGame {
 		}
 	}
 
-	public boolean movePossible(int position) {
-		return board[position] == ' ';
-	}
-	
 	// Ask the player to give an index and moves there if possible
 	public void move() {
 		System.out.println("Enter your position(1 to 9): ");
 		int position = sc.nextInt();
 		try {
-			if (movePossible(position) && position >= 1 && position <= 9)
-				board[position] = playerLetter;
-			else {
-				System.err.println("Already occupies the position. Try again.");
-				move();
-			}
+			board[position] = playerLetter;
 		} catch (ArrayIndexOutOfBoundsException e) {
 			System.err.println("Enter between 1 to 9");
 			move();
 		}
-
 	}
 
 	private static Scanner sc = new Scanner(System.in);
