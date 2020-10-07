@@ -1,3 +1,3 @@
 # TicTacToe
-## Version UC6
-### Perform a toss to decide who plays first
+## Version UC7
+### Checks whether player wins or is it a tie
