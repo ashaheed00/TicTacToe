@@ -1,3 +1,3 @@
 # TicTacToe
-## Version UC8
-### Plays a full match and checks who wins
+## Version UC9
+### Computer now has the ability to win as well as block the player from winning

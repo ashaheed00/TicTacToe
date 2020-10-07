@@ -1,6 +1,7 @@
 package com.bl.tictactoe;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 public class TicTacToeGame {
 	private char[] board = new char[10];
@@ -10,15 +11,18 @@ public class TicTacToeGame {
 	private byte activePlayer;
 	private final int[][] WIN_POSITIONS = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 }, { 1, 4, 7 }, { 2, 5, 8 },
 			{ 3, 6, 9 }, { 1, 5, 9 }, { 3, 5, 7 } };
+	private final Map<Integer, Integer> availableMoves = new HashMap<>();
 
 
 	public TicTacToeGame() {
 		boardInitiate();
+		Stream.iterate(1, i -> i + 1).limit(9).forEach(i -> availableMoves.put(i, i));
 	}
 
 	// Initiating the board
 	private char[] boardInitiate() {
 		Arrays.fill(board, ' ');
+		board[0] = 'z'; // ignoring 0th index
 		return board;
 	}
 
@@ -26,9 +30,11 @@ public class TicTacToeGame {
 	private void toss() {
 		byte toss = (byte) (Math.random() * 10 % 2);
 		if (toss == PLAYER) {
+			activePlayer = PLAYER;
 			System.out.println("Your are playing first.");
 			chooseLettter();
 		} else {
+			activePlayer = COMPUTER;
 			playerLetter = 'x';
 			System.out.println("Computer's turn first.");
 		}
@@ -47,7 +53,7 @@ public class TicTacToeGame {
 	}
 
 	// determines computer's letter based on player's
-	private char computerLetter(char playerLetter) {
+	private char computerLetter() {
 		return playerLetter == 'o' ? 'x' : 'o';
 	}
 
@@ -74,6 +80,7 @@ public class TicTacToeGame {
 			if (movePossible(position) && position >= 1 && position <= 9) {
 				board[position] = playerLetter;
 				showBoard();
+				availableMoves.remove(position);
 			} else {
 				System.err.println("Already occupies the position. Try again.");
 				playerMove();
@@ -87,9 +94,14 @@ public class TicTacToeGame {
 	// computer places its move
 	public void computerMove() {
 		int computerPosition = (int) (Math.random() * 10 % 9) + 1;
+		computerPosition = predictsWinOrBlockMove(computerPosition, playerLetter);
+		computerPosition = predictsWinOrBlockMove(computerPosition, computerLetter());
+
 		if (movePossible(computerPosition)) {
 			board[computerPosition] = computerLetter();
 			showBoard();
+			availableMoves.remove(computerPosition);
+			System.out.println("Your available moves: " + availableMoves);
 			return;
 		} else {
 			computerMove();
@@ -106,6 +118,55 @@ public class TicTacToeGame {
 		return false;
 	}
 
+	// Predicts next position to win or to block the opponent
+	public int predictsWinOrBlockMove(int position, char ch) {
+		for (int p : availableMoves.keySet()) {
+			if (p == 1) {
+				if (board[2] + board[3] == ch * 2 || board[4] + board[7] == ch * 2)
+					return p;
+			}
+			if (p == 2) {
+				if (board[1] + board[3] == ch * 2 || board[5] + board[8] == ch * 2)
+					return p;
+			}
+			if (p == 3) {
+				if (board[1] + board[2] == ch * 2 || board[6] + board[9] == ch * 2 || board[5] + board[7] == ch * 2)
+					return p;
+			}
+			if (p == 2) {
+				if (board[1] + board[3] == ch * 2 || board[5] + board[8] == ch * 2)
+					return p;
+			}
+			if (p == 4) {
+				if (board[1] + board[7] == ch * 2 || board[5] + board[6] == ch * 2)
+					return p;
+			}
+			if (p == 5) {
+				if (board[1] + board[9] == ch * 2 || board[4] + board[6] == ch * 2 || board[2] + board[8] == ch * 2
+						|| board[3] + board[7] == ch * 2)
+					return p;
+			}
+			if (p == 6) {
+				if (board[4] + board[5] == ch * 2 || board[3] + board[9] == ch * 2)
+					return p;
+			}
+			if (p == 7) {
+				if (board[1] + board[4] == ch * 2 || board[9] + board[8] == ch * 2 || board[3] + board[5] == ch * 2)
+					return p;
+			}
+			if (p == 8) {
+				if (board[2] + board[5] == ch * 2 || board[7] + board[9] == ch * 2)
+					return p;
+			}
+			if (p == 9) {
+				if (board[1] + board[5] == ch * 2 || board[7] + board[8] == ch * 2 || board[3] + board[6] == ch * 2)
+					return p;
+			}
+		}
+
+		return position;
+	}
+
 	// checking the winner providing their playing char
 	public boolean checkWinner(char ch) {
 		for (int[] win : WIN_POSITIONS) {
@@ -119,16 +180,16 @@ public class TicTacToeGame {
 	// or a player wins
 	public void play() {
 		while (boardNotFilled()) {
-			if (activePlayer == 0) {
+			if (activePlayer == PLAYER) {
 				playerMove();
-				activePlayer = 1;
+				activePlayer = COMPUTER;
 				if (checkWinner(playerLetter)) {
 					System.out.println("You are the winner!!");
 					return;
 				}
 			} else {
 				computerMove();
-				activePlayer = 0;
+				activePlayer = PLAYER;
 				if (checkWinner(computerLetter())) {
 					System.out.println("Oops!! Computer has won.");
 					return;
