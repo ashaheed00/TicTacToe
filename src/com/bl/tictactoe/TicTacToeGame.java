@@ -42,6 +42,7 @@ public class TicTacToeGame {
 		}
 	}
 
+	// Checks free spcae of a given index
 	public boolean movePossible(int position) {
 		return board[position] == ' ';
 	}

@@ -1,3 +1,3 @@
 # TicTacToe
-## Version UC3
-### Player will move to a desired location
+## Version UC5
+### Check if desired index is free and then make the move 
