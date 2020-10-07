@@ -1,3 +1,3 @@
 # TicTacToe
 ## Version UC3
-### Board will be shown
+### Player will move to a desired location
