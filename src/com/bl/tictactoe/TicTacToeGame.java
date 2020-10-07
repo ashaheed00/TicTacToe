@@ -15,13 +15,16 @@ public class TicTacToeGame {
 		return board;
 	}
 
-	// player chooses letter
-	private char chooseLettter(char playerLetter) throws Exception {
-
+	// Giving user a chance to choose preferred letter
+	private char chooseLettter() {
+		System.out.println("Enter your preferred letter (o or x): ");
+		playerLetter = sc.next().charAt(0);
 		if (playerLetter == 'o' || playerLetter == 'x')
 			return playerLetter;
-		else
-			throw new Exception("Choose only o or x");
+		else {
+			System.err.println("Wrong input. Taking 'o' as your choice.");
+			return playerLetter = 'o';
+		}
 	}
 
 	// determines computer's letter based on player's
