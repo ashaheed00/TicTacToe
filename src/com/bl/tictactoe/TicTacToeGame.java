@@ -7,6 +7,7 @@ public class TicTacToeGame {
 	private char playerLetter;
 	private final byte PLAYER = 0;
 	private final byte COMPUTER = 1;
+	private byte activePlayer;
 	private final int[][] WIN_POSITIONS = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 }, { 1, 4, 7 }, { 2, 5, 8 },
 			{ 3, 6, 9 }, { 1, 5, 9 }, { 3, 5, 7 } };
 
@@ -65,22 +66,44 @@ public class TicTacToeGame {
 		return board[position] == ' ';
 	}
 	
-	// Ask the player to give an index and moves there if possible
-	public void move() {
-		System.out.println("Enter your position(1 to 9): ");
+	// player places her/his move
+	public void playerMove() {
+		System.out.println("Enter your next move(1 to 9): ");
 		int position = sc.nextInt();
 		try {
-			if (movePossible(position) && position >= 1 && position <= 9)
+			if (movePossible(position) && position >= 1 && position <= 9) {
 				board[position] = playerLetter;
-			else {
+				showBoard();
+			} else {
 				System.err.println("Already occupies the position. Try again.");
-				move();
+				playerMove();
 			}
 		} catch (ArrayIndexOutOfBoundsException e) {
 			System.err.println("Enter between 1 to 9");
-			move();
+			playerMove();
 		}
+	}
 
+	// computer places its move
+	public void computerMove() {
+		int computerPosition = (int) (Math.random() * 10 % 9) + 1;
+		if (movePossible(computerPosition)) {
+			board[computerPosition] = computerLetter();
+			showBoard();
+			return;
+		} else {
+			computerMove();
+			return;
+		}
+	}
+
+	// checking whether the board is filled or not
+	public boolean boardNotFilled() {
+		for (char ch : board)
+			if (ch == ' ')
+				return true;
+
+		return false;
 	}
 
 	// checking the winner providing their playing char
@@ -92,17 +115,36 @@ public class TicTacToeGame {
 		return false;
 	}
 
+	// play happens until board is filled
+	// or a player wins
+	public void play() {
+		while (boardNotFilled()) {
+			if (activePlayer == 0) {
+				playerMove();
+				activePlayer = 1;
+				if (checkWinner(playerLetter)) {
+					System.out.println("You are the winner!!");
+					return;
+				}
+			} else {
+				computerMove();
+				activePlayer = 0;
+				if (checkWinner(computerLetter())) {
+					System.out.println("Oops!! Computer has won.");
+					return;
+				}
+			}
+		}
+		System.out.println("Game is a tie.");
+	}
+
 	private static Scanner sc = new Scanner(System.in);
 
 	public static void main(String[] args) {
 		TicTacToeGame ticTacToeGame = new TicTacToeGame();
 
-		char playerLetter = sc.next().charAt(0);
-		System.out.println("Player has choosen: " + ticTacToeGame.chooseLettter(playerLetter));
-		System.out.println("Computer's letter : " + ticTacToeGame.computerLetter(playerLetter));
-
-		ticTacToeGame.move();
-		ticTacToeGame.showBoard();
+		ticTacToeGame.toss();
+		ticTacToeGame.play();
 
 		sc.close();
 
