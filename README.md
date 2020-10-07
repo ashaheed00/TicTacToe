@@ -1,3 +1,3 @@
 # TicTacToe
-## Version UC5
-### Check if desired index is free and then make the move 
+## Version UC6
+### Perform a toss to decide who plays first

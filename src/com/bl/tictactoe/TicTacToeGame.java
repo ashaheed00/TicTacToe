@@ -4,6 +4,9 @@ import java.util.*;
 
 public class TicTacToeGame {
 	private char[] board = new char[10];
+	private char playerLetter;
+	private final byte PLAYER = 0;
+	private final byte COMPUTER = 1;
 
 	public TicTacToeGame() {
 		boardInitiate();
@@ -13,6 +16,18 @@ public class TicTacToeGame {
 	private char[] boardInitiate() {
 		Arrays.fill(board, ' ');
 		return board;
+	}
+
+	// Performing a toss to decide who plays first
+	private void toss() {
+		byte toss = (byte) (Math.random() * 10 % 2);
+		if (toss == PLAYER) {
+			System.out.println("Your are playing first.");
+			chooseLettter();
+		} else {
+			playerLetter = 'x';
+			System.out.println("Computer's turn first.");
+		}
 	}
 
 	// Giving user a chance to choose preferred letter
