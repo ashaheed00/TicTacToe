@@ -4,6 +4,7 @@ import java.util.*;
 
 public class TicTacToeGame {
 	private char[] board = new char[10];
+	private char playerLetter;
 
 	public TicTacToeGame() {
 		boardInitiate();
