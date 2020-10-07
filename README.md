@@ -1,3 +1,3 @@
 # TicTacToe
-## Version UC1
-## creating a tictactoe board
+## Version UC2
+### player chooses letter and determines computer's letter based on that
