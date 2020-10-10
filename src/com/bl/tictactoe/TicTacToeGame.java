@@ -216,16 +216,30 @@ public class TicTacToeGame {
 		System.out.println("Game is a tie.");
 	}
 
+	public static void homePage() {
+		System.out.println("|| WELCOME to TIC-TAC-TOE ||");
+		System.out.println("Play: Enter 1" + "\nExit: Enter 0");
+		TicTacToeGame ticTacToeGame = new TicTacToeGame();
+		switch (sc.nextInt()) {
+		case 1:
+			ticTacToeGame.toss();
+			ticTacToeGame.play();
+			homePage();
+			break;
+		case 0:
+			System.out.println("Bye :(");
+			return;
+		default:
+			System.err.println("Wrong Entry. Enter again.");
+			homePage();
+		}
+	}
+
 	private static Scanner sc = new Scanner(System.in);
 
 	public static void main(String[] args) {
-		TicTacToeGame ticTacToeGame = new TicTacToeGame();
-
-		/* Player plays till end */
-		ticTacToeGame.toss();
-		ticTacToeGame.play();
+		TicTacToeGame.homePage();
 
 		sc.close();
-
 	}
 }
