@@ -221,6 +221,7 @@ public class TicTacToeGame {
 	public static void main(String[] args) {
 		TicTacToeGame ticTacToeGame = new TicTacToeGame();
 
+		/* Player plays till end */
 		ticTacToeGame.toss();
 		ticTacToeGame.play();
 
