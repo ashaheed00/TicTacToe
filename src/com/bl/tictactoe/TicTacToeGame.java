@@ -93,6 +93,7 @@ public class TicTacToeGame {
 	// computer places its move
 	private void computerMove() {
 		int computerPosition = (int) (Math.random() * 10 % 9) + 1;
+		computerPosition = moveToCentre(computerPosition);
 		computerPosition = moveToCorner(computerPosition);
 		computerPosition = predictsWinOrBlockMove(computerPosition, playerLetter);
 		computerPosition = predictsWinOrBlockMove(computerPosition, computerLetter());
@@ -182,6 +183,13 @@ public class TicTacToeGame {
 			if (p == 1 || p == 3 || p == 7 || p == 9)
 				return p;
 		}
+		return position;
+	}
+
+	/* Moves to center if it's available */
+	private int moveToCentre(int position) {
+		if (availableMoves.containsKey(5))
+			return 5;
 		return position;
 	}
 
