@@ -13,7 +13,6 @@ public class TicTacToeGame {
 			{ 3, 6, 9 }, { 1, 5, 9 }, { 3, 5, 7 } };
 	private final Map<Integer, Integer> availableMoves = new HashMap<>();
 
-
 	public TicTacToeGame() {
 		boardInitiate();
 		Stream.iterate(1, i -> i + 1).limit(9).forEach(i -> availableMoves.put(i, i));
@@ -27,7 +26,7 @@ public class TicTacToeGame {
 	}
 
 	// Performing a toss to decide who plays first
-	private void toss() {
+	public void toss() {
 		byte toss = (byte) (Math.random() * 10 % 2);
 		if (toss == PLAYER) {
 			activePlayer = PLAYER;
@@ -67,13 +66,13 @@ public class TicTacToeGame {
 		}
 	}
 
-	// Checks free spcae of a given index
-	public boolean movePossible(int position) {
+	// Checks free space of a given index
+	private boolean movePossible(int position) {
 		return board[position] == ' ';
 	}
-	
+
 	// player places her/his move
-	public void playerMove() {
+	private void playerMove() {
 		System.out.println("Enter your next move(1 to 9): ");
 		int position = sc.nextInt();
 		try {
@@ -92,8 +91,9 @@ public class TicTacToeGame {
 	}
 
 	// computer places its move
-	public void computerMove() {
+	private void computerMove() {
 		int computerPosition = (int) (Math.random() * 10 % 9) + 1;
+		computerPosition = moveToCorner(computerPosition);
 		computerPosition = predictsWinOrBlockMove(computerPosition, playerLetter);
 		computerPosition = predictsWinOrBlockMove(computerPosition, computerLetter());
 
@@ -110,7 +110,7 @@ public class TicTacToeGame {
 	}
 
 	// checking whether the board is filled or not
-	public boolean boardNotFilled() {
+	private boolean boardNotFilled() {
 		for (char ch : board)
 			if (ch == ' ')
 				return true;
@@ -119,7 +119,7 @@ public class TicTacToeGame {
 	}
 
 	// Predicts next position to win or to block the opponent
-	public int predictsWinOrBlockMove(int position, char ch) {
+	private int predictsWinOrBlockMove(int position, char ch) {
 		for (int p : availableMoves.keySet()) {
 			if (p == 1) {
 				if (board[2] + board[3] == ch * 2 || board[4] + board[7] == ch * 2)
@@ -168,12 +168,21 @@ public class TicTacToeGame {
 	}
 
 	// checking the winner providing their playing char
-	public boolean checkWinner(char ch) {
+	private boolean checkWinner(char ch) {
 		for (int[] win : WIN_POSITIONS) {
 			if (board[win[0]] == ch && board[win[1]] == ch && board[win[2]] == ch)
 				return true;
 		}
 		return false;
+	}
+
+	/* It places the to corner if it's available */
+	private int moveToCorner(int position) {
+		for (int p : availableMoves.keySet()) {
+			if (p == 1 || p == 3 || p == 7 || p == 9)
+				return p;
+		}
+		return position;
 	}
 
 	// play happens until board is filled

@@ -1,3 +1,3 @@
 # TicTacToe
-## Version UC9
-### Computer now has the ability to win as well as block the player from winning
+## Version UC10
+#### Computer now has the ability to move to corner if win or blocking doesn't happen
